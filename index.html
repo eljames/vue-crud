@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+	<link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
+	<title>Teams and Players</title>
+	<link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+	<link type="text/css" rel="stylesheet" href="src/css/style.css">
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
+</head>
+<body>
+
+	<!-- Corpo principal, onde se encontra o uso do componente para times e jogadores -->
+	
+	<div id="app">
+		<v-app id="inspire">
+			<v-content>
+				<crud :fields="teamFields" :items="teams" title="Times">
+			</v-content>
+			</v-content>
+				<crud :fields="playerFields" :items="players" title="Jogadores">
+			<v-content>
+		</v-app>
+	</div>
+	
+	<!-- Template do componente CRUD para adicionar, alterar, excluir e visualizar -->
+	
+	<script type="text/x-template" id="crud-template">
+			<v-container fluid grid-list-md>
+				<v-layout row justify-center mt-5>
+					<v-flex xs2 class="title">
+				  		{{ title }}
+					</v-flex>
+				</v-layout>
+				<v-layout row align-center justify-center v-for="field in fields" :key="field.name">
+					<v-flex xs2>
+				  		<v-text-field :label="field.label" v-model="field.value"></v-text-field>
+					</v-flex>
+				</v-layout>
+				<v-layout row align-center justify-center>
+					<v-flex xs2>
+				  		<v-btn small color="primary" v-on:click="add">Adicionar</v-btn>
+					</v-flex>
+				</v-layout>
+				<v-layout row justify-center mt-5>
+					<v-flex xs6>
+						<v-data-table :headers="headers" :items="items" no-data-text="Nenhum registro cadastrado" hide-actions class="elevation-1">
+							<template slot="items" slot-scope="props">
+								<td v-for="field in fields">{{ props.item[field.name] }}</td>
+								<td>
+									<v-icon small class="mr-2" @click="edit(props.item)">edit</v-icon>
+									<v-icon small @click="remove(props.item)">delete</v-icon>
+								</td>
+							</template>
+						</v-data-table>
+					</v-flex>
+				</v-layout>
+				<v-dialog v-model="dialog" max-width="500px">
+					<v-card>
+					  	<v-card-title>
+							<span class="headline">Editar</span>
+					  	</v-card-title>
+					  	<v-card-text>
+							<v-container grid-list-md>
+						  	<v-layout wrap>
+						    	<v-flex xs12 sm6 md4 v-for="field in editFields" :key="field.name">
+						      	<v-text-field v-model="field.value" :label="field.label"></v-text-field>
+						    	</v-flex>
+						  	</v-layout>
+							</v-container>
+					  	</v-card-text>
+					  	<v-card-actions>
+							<v-spacer></v-spacer>
+							<v-btn color="blue darken-1" flat @click.native="close">Cancel</v-btn>
+							<v-btn color="blue darken-1" flat @click.native="save">Save</v-btn>
+					  	</v-card-actions>
+					</v-card>
+      			</v-dialog>
+  			</v-container>
+	</script>
+	
+	<!-- Javascript para definição do componente CRUD -->
+	<script src="src/js/crud.js"></script>
+	
+	<!-- Javascript da inicialização do vue.js para a utilização do componente CRUD para lista de times e jogadores -->
+	<script src="src/js/init.js"></script>
+</body>
+</html>
